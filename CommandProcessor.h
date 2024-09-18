@@ -2,15 +2,17 @@
 #define COMMANDPROCESSOR_H
 
 #include <string>
+#include "UserManager.h"
+#include "FileSystem.h"
 
 class CommandProcessor {
-public:
-    void redoCommand();
-    void undoCommand();
-    void executeCommand(const std::string& command);
-    void showHistory() const;
 private:
-    // Private members
+    UserManager userManager;
+    FileSystem fileSystem;
+
+public:
+    CommandProcessor();
+    void processCommand(const std::string& command);
 };
 
 #endif // COMMANDPROCESSOR_H

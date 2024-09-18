@@ -5,21 +5,18 @@ int main() {
     CommandProcessor cp;
     std::string command;
 
+    std::cout << "Welcome to the CLI Operating System.\n";
+    std::cout << "Type 'exit' to quit.\n";
+
     while (true) {
         std::cout << "> ";
         std::getline(std::cin, command);
 
         if (command == "exit") {
             break;
-        } else if (command == "undo") {
-            cp.undoCommand();
-        } else if (command == "redo") {
-            cp.redoCommand();
-        } else if (command == "history") {
-            cp.showHistory();
-        } else {
-            cp.executeCommand(command);
         }
+
+        cp.processCommand(command);
     }
 
     return 0;
