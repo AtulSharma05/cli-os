@@ -3,6 +3,7 @@
 #include <string>
 #include "../userManager/UserManager.h"
 #include "../fileSystem/FileSystem.h"
+#include "../fileSystem/FileSystemFuncs.h"
 
 #include <vector>
 

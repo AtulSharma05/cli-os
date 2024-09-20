@@ -14,16 +14,16 @@ void FileSystem::createDirectory(string& dirName) {
         }
         temp->nextSibling = newDir;
     }
-    std::cout << "Directory " << dirName << " created.\n";
+    cout << "Directory " << dirName << " created.\n";
 }
 
 void FileSystem::listFiles() {
     Node* temp = currentDir->firstChild;
     if (!temp) {
-        std::cout << "No files or directories.\n";
+        cout << "No files or directories.\n";
     } else {
         while (temp) {
-            std::cout << (temp->isDirectory ? "DIR " : "FILE ") << temp->name << std::endl;
+            cout << (temp->isDirectory ? "DIR " : "FILE ") << temp->name << endl;
             temp = temp->nextSibling;
         }
     }
@@ -34,7 +34,7 @@ void FileSystem::changeDirectory(string& dirName) {
         if (currentDir->parent) {
             currentDir = currentDir->parent;
         } else {
-            std::cout << "Already at root directory.\n";
+            cout << "Already at root directory.\n";
         }
         return;
     }
@@ -47,15 +47,15 @@ void FileSystem::changeDirectory(string& dirName) {
         }
         temp = temp->nextSibling;
     }
-    std::cout << "Directory not found.\n";
+    cout << "Directory not found.\n";
 }
 
 void FileSystem::printWorkingDirectory() {
     Node* temp = currentDir;
-    std::string path;
+    string path;
     while (temp) {
         path = "/" + temp->name + path;
         temp = temp->parent;
     }
-    std::cout << "Current directory: " << path << std::endl;
+    cout << "Current directory: " << path << endl;
 }
