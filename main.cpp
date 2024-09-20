@@ -1,22 +1,24 @@
-#include "CommandProcessor.h"
+#include "./commandProcessor/CommandProcessor.h"
 #include <iostream>
-
+#include <vector>
+using namespace std;
 int main() {
-    CommandProcessor cp;
-    std::string command;
-
+    UserManager root;
+   vector<UserManager> users;
+   users.push_back(root);
+string command;
+CommandProcessor cp;
     std::cout << "Welcome to the CLI Operating System.\n";
     std::cout << "Type 'exit' to quit.\n";
+    std::cout << "Type 'help' for a list of available commands.\n";
 
     while (true) {
         std::cout << "> ";
-        std::getline(std::cin, command);
 
         if (command == "exit") {
             break;
         }
-
-        cp.processCommand(command);
+cp.processCommand(users,command);
     }
 
     return 0;

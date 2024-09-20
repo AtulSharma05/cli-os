@@ -1,13 +1,6 @@
+#pragma once
 #include "FileSystem.h"
 #include <iostream>
-
-FileSystem::FileSystem() {
-    root = new Node("/", true, nullptr);
-    currentDir = root;
-}
-
-FileSystem::Node::Node(const std::string& nodeName, bool isDir, Node* parentNode)
-    : name(nodeName), isDirectory(isDir), parent(parentNode), firstChild(nullptr), nextSibling(nullptr) {}
 
 void FileSystem::createDirectory(const std::string& dirName) {
     Node* newDir = new Node(dirName, true, currentDir);

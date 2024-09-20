@@ -1,5 +1,4 @@
-#ifndef FILESYSTEM_H
-#define FILESYSTEM_H
+
 
 #include <string>
 
@@ -19,11 +18,20 @@ private:
     Node* currentDir;
 
 public:
-    FileSystem();
+   FileSystem() {
+    root = new Node("/", true, nullptr);
+    currentDir = root;
+
+}
+
+FileSystem(const std::string& nodeName, bool isDir, Node* parentNode){
+    root = new Node(nodeName, isDir, parentNode);
+    currentDir = root;
+    
+}
     void createDirectory(const std::string& dirName);
     void listFiles();
     void changeDirectory(const std::string& dirName);
     void printWorkingDirectory();
 };
 
-#endif // FILESYSTEM_H
