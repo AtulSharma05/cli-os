@@ -1,8 +1,9 @@
 #pragma once
 #include "FileSystem.h"
 #include <iostream>
+using namespace std;
 
-void FileSystem::createDirectory(const std::string& dirName) {
+void FileSystem::createDirectory(string& dirName) {
     Node* newDir = new Node(dirName, true, currentDir);
     if (!currentDir->firstChild) {
         currentDir->firstChild = newDir;
@@ -28,7 +29,7 @@ void FileSystem::listFiles() {
     }
 }
 
-void FileSystem::changeDirectory(const std::string& dirName) {
+void FileSystem::changeDirectory(string& dirName) {
     if (dirName == "..") {
         if (currentDir->parent) {
             currentDir = currentDir->parent;

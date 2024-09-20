@@ -1,8 +1,10 @@
-
+#pragma once
 
 #include <string>
 #include "../userManager/UserManager.h"
 #include "../fileSystem/FileSystem.h"
+
+#include <vector>
 
 class CommandProcessor {
 private:
@@ -14,6 +16,6 @@ public:
         fileSystem = new  FileSystem();
 
     };
-    void processCommand(vector<UserManager>&,const std::string& command);
+    void processCommand(vector<UserManager>&,string& );
 };
 

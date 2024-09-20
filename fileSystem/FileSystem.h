@@ -1,18 +1,25 @@
 
-
+#pragma once
 #include <string>
 
-class FileSystem {
-private:
-    struct Node {
-        std::string name;
+class Node {
+    public:
+        string name;
         bool isDirectory;
         Node* parent;
         Node* firstChild;
         Node* nextSibling;
 
-        Node(const std::string& nodeName, bool isDir, Node* parentNode);
+        Node(string nodeName, bool isDir, Node* parentNode){
+            name = nodeName;
+            isDirectory = isDir;
+            parent = parentNode;
+        }
     };
+
+class FileSystem {
+private:
+    
 
     Node* root;
     Node* currentDir;
@@ -29,9 +36,9 @@ FileSystem(const std::string& nodeName, bool isDir, Node* parentNode){
     currentDir = root;
     
 }
-    void createDirectory(const std::string& dirName);
+    void createDirectory(string& dirName);
     void listFiles();
-    void changeDirectory(const std::string& dirName);
+    void changeDirectory(string& dirName);
     void printWorkingDirectory();
 };
 

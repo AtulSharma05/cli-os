@@ -1,4 +1,6 @@
+
 #include "./commandProcessor/CommandProcessor.h"
+#include "./commandProcessor/CommandProcessorfuncs.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -6,19 +8,20 @@ int main() {
     UserManager root;
    vector<UserManager> users;
    users.push_back(root);
-string command;
-CommandProcessor cp;
+    string command;
+    CommandProcessor cp;
     std::cout << "Welcome to the CLI Operating System.\n";
     std::cout << "Type 'exit' to quit.\n";
     std::cout << "Type 'help' for a list of available commands.\n";
 
     while (true) {
         std::cout << "> ";
-
+        cin >> command;
         if (command == "exit") {
             break;
         }
-cp.processCommand(users,command);
+
+        cp.processCommand(users,command);
     }
 
     return 0;
