@@ -1,4 +1,6 @@
-#include "Stack.h"
+#pragma once
+#include <iostream>
+#include "../linkedList/LinkedList.h"
 
 template <typename T>
 void Stack<T>::push(T value) {
@@ -15,14 +17,14 @@ void Stack<T>::pop() {
 }
 
 template <typename T>
-T Stack<T>::top() const {
+T Stack<T>::top() {
     if (!list.isEmpty()) {
         return list.back();
     }
-    // Handle empty stack case (throw an exception or return a default value)
+   // Handle empty stack case (throw an exception or return a default value)
 }
 
 template <typename T>
-bool Stack<T>::isEmpty() const {
+bool Stack<T>::isEmpty() {
     return list.isEmpty();
 }

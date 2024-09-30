@@ -1,6 +1,10 @@
 #pragma once
 #include "CommandProcessor.h"
-#include "../UserManager.h"
+#include "../userManager/UserManager.h" 
+#include "../userManager/UserManagerfunc.h" 
+#include "../fileSystem/FileSystem.h"
+#include "../fileSystem/makeDirectory.h"
+#include "../fileSystem/makeFile.h"
 #include <iostream>
 #include <vector>
 
@@ -8,15 +12,24 @@
 void CommandProcessor::processCommand(vector<UserManager>&users, string& command) {
     
     if (command == "ls") {
-
+cout<<"ls command executed";
         fileSystem->listFiles();
 
     } else if (command.substr(0, 6) == "mkdir ") {
+        cout<<"mkdir command executed";
 
         string dirName = command.substr(6);
-        fileSystem->createDirectory(dirName);
+        fileSystem->makeDirectory(dirName);
 
-    } else if (command.substr(0, 3) == "cd ") {
+    }else if (command.substr(0, 7) == "mkfile ") {
+        cout<<"mkfile command executed";
+
+        string filName = command.substr(7);
+        fileSystem->makeFile(filName);
+
+    } 
+    else if (command.substr(0, 3) == "cd ") {
+        cout<<"cd command executed";
         string dirName = command.substr(3);
         fileSystem->changeDirectory(dirName);
     } else if (command == "pwd") {

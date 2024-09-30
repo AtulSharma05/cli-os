@@ -4,6 +4,7 @@
 #include "../userManager/UserManager.h"
 #include "../fileSystem/FileSystem.h"
 #include "../fileSystem/FileSystemFuncs.h"
+#include "../fileSystem/file.h"
 
 #include <vector>
 
