@@ -6,12 +6,14 @@ using namespace std;
 class file{
     public:
 string name;
-int *content;
-file(){
-    
-}
-file(string name){
-    this->name=name;
+string content;
+
+  file(){ }
+    file(string name) 
+        : name(name) {}
+void setcontent(string c){
+    content=c;
+
 }
 string getName(){
     return name;
@@ -25,4 +27,5 @@ bool operator!=(const file& other){
 void display(){
     cout<<name;
 }
+
 };

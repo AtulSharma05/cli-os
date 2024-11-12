@@ -3,6 +3,7 @@
 #include <string>
 #include "../linkedList/LinkedList.h"
 #include "./file.h"
+using namespace std;
 
 class FileSystem{
 private:
@@ -10,19 +11,25 @@ private:
     LinkedList<FileSystem> children;
     LinkedList<file> files;
    bool isDirectory;
+   FileSystem* parent;
 
 public:
-FileSystem() : name(""), isDirectory(true) {}
-FileSystem(const std::string& dirName, bool isDir)
-        : name(dirName), isDirectory(isDir) {}
+   FileSystem() : name("root"), isDirectory(true), parent(nullptr) {}
+    FileSystem(string& dirName, bool isDir, FileSystem* parentDir)
+        : name(dirName), isDirectory(isDir), parent(parentDir) {}
+
 
     void makeDirectory(string& dirName);
+    FileSystem* findDirectoryPath(string& path);
     void listFiles();
-    void changeDirectory(string& dirName);
+    FileSystem* changeDirectory(string& dirName);
     void printWorkingDirectory();
+    FileSystem* findDirectory(string&);
+    void findCommand(string &path,string &type,string &name);
     void makeFile(string& fileName);
-    void display(){
-        cout<< name << endl;
+    file* findFile(string& fileName);
+    string getName(){
+       return name;
     }
     bool operator==(const FileSystem& other){
     return name == other.name;
@@ -30,27 +37,41 @@ FileSystem(const std::string& dirName, bool isDir)
 bool operator!=(const FileSystem& other) const {
     return name != other.name;
 }
-
+void zipCommand(file * );
+void unzipCommand(file * );
+void zip(string filename){
+   file *temp= this->findFile(filename);
+   if(temp!=nullptr){
+   this->zipCommand(temp);}
+   else{cout<<"no such file exits";}
+}
+void unzip(string filename){
+    file *temp= this->findFile(filename);
+    if(temp!=nullptr){
+   this->unzipCommand(temp);}
+   else{cout<<"no such file exits";}
+}
+void nanoEditor(string& );
 };
 
 template <> 
 void LinkedList<file>::display(){
     Node<file>* temp = head;
     while (temp != nullptr) {
-        std::cout << temp->data.getName() << " ";  // Print the file name
+        cout << temp->data.getName() << "\t";  // Print the file name
         temp = temp->next;
     }
-    std::cout << std::endl;
+    cout << endl;
 
 }
 template <>
 void LinkedList<FileSystem>::display() {
     Node<FileSystem>* temp = head;
     while (temp != nullptr) {
-        temp->data.display();  // Call the FileSystem display method
+       cout<<temp->data.getName();  // Call the FileSystem display method
         temp = temp->next;
     }
-    std::cout << std::endl;
+    cout << endl;
 }
 
 

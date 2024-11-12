@@ -21,7 +21,7 @@ T Stack<T>::top() {
     if (!list.isEmpty()) {
         return list.back();
     }
-   // Handle empty stack case (throw an exception or return a default value)
+  return nullptr; // Handle empty stack case (throw an exception or return a default value)
 }
 
 template <typename T>

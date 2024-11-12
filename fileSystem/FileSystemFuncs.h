@@ -6,30 +6,32 @@ using namespace std;
 
 
 void FileSystem::listFiles() {
-        std::cout << "Contents of " << name << ":" << std::endl;
+        cout << "Contents of " << name << ":" << endl;
 
-        // List directories
+        
         if (!children.isEmpty()) {
-            std::cout << "Directories:" << std::endl;
-            children.display(); // Display names of directories
+            cout << "Directories:" << endl;
+            children.display(); 
         } else {
-            std::cout << "No directories." << std::endl;
+            cout << "No directories." << endl;
         }
 
         // List files
         if (!files.isEmpty()) {
-            std::cout << "Files:" << std::endl;
+            cout << "Files:" << endl;
             files.display(); // Display names of files
         } else {
-            std::cout << "No files." << std::endl;
+            cout << "No files." << endl;
         }
     }
 
 
-void FileSystem::changeDirectory(string& dirName) {
-
-}
 
 void FileSystem::printWorkingDirectory() {
+    if (parent != nullptr) {
+       parent->printWorkingDirectory(); // Recursive call to print the full path
+       
+    }
+    cout << "/" << this->name; // Print current directory name
 
 }

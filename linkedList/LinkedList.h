@@ -13,10 +13,10 @@ class Node {
     };
 template <typename T>
 class LinkedList {
-private:
-    Node<T>* head;
 
 public:
+    Node<T>* head;
+
     LinkedList(){
         head = nullptr;
     }

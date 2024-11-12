@@ -1,5 +1,6 @@
 #pragma once
 #include "FileSystem.h"
+#include "file.h"
 #include <iostream>
 using namespace std;
 template <>
@@ -17,5 +18,6 @@ void LinkedList<file>::append(file &value) {
 }
 void FileSystem::makeFile(string& filName) {
     file newFil(filName);
+
     files.append(newFil);
 }

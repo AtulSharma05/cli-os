@@ -16,7 +16,8 @@ void LinkedList<FileSystem>::append(FileSystem &value) {
     }
 }
 void FileSystem::makeDirectory(string& dirName) {
-    FileSystem newDir(dirName,true);
+    FileSystem newDir(dirName,true,this);
+     newDir.parent = this; 
     children.append(newDir);
     
 }
