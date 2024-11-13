@@ -26,7 +26,7 @@ void CommandProcessor::processCommand(vector<UserManager>&users, string& command
     size_t namePos = command.find(' ', typePos + 1);
         string path = command.substr(pathStart, typePos - pathStart);
         string type = command.substr(typePos + 1, namePos - typePos - 1);
-        string name = command.substr(namePos + 1);
+        string name = command.substr(namePos+1);
 
         // Validate the type
         if (type != "f" && type != "d") {
@@ -52,13 +52,21 @@ void CommandProcessor::processCommand(vector<UserManager>&users, string& command
         currentDir->makeFile(filName);
 
     } 
-    else if (command.substr(0, 3) == "cd ") {
+    else if (command.substr(0, 2) == "cd") {
+        clearLines();
+        if(command=="cd"){
+            while(currentDir->parent!=nullptr){
+                currentDir = currentDir->parent;
+            }
+        }else{
+
 
         string dirName = command.substr(3); 
-      currentDir=currentDir->changeDirectory(dirName);
+        
+      currentDir=currentDir->changeDirectory(dirName);}
     } else if (command == "pwd") {
         currentDir->printWorkingDirectory();
-    } else if (command.substr(0, 7) == "adduser ") {
+    } else if (command.substr(0, 8) == "adduser ") {
         string userInfo = command.substr(8);
         int spacePos = userInfo.find(' ');
         string username = userInfo.substr(0, spacePos);
@@ -75,7 +83,7 @@ void CommandProcessor::processCommand(vector<UserManager>&users, string& command
         string filename = command.substr(5);
         currentDir->nanoEditor(filename);
     }
-    else if (command.substr(0, 8) == "login ") {
+    else if (command.substr(0, 6) == "login ") {
         string userInfo = command.substr(6);
         int spacePos = userInfo.find(' ');
         string username = userInfo.substr(0, spacePos);
@@ -93,6 +101,61 @@ void CommandProcessor::processCommand(vector<UserManager>&users, string& command
         }else{ cout<<"No such file exits";
         }
 
+    } else if (command.substr(0, 3) == "rm ") {
+        string target = command.substr(3);
+        if (currentDir->findFile(target)) {
+            currentDir->removeFile(target);
+            cout << "Removed file: " << target << "\n";
+        } else if (currentDir->findDirectory(target)) {
+            currentDir->removeNode(currentDir, target);
+            cout << "Removed directory: " << target << "\n";
+        } else {
+            cout << "No such file or directory: " << target << "\n";
+        }
+    } else if (command.substr(0, 3) == "mv ") {
+        size_t spacePos = command.find(' ', 3);
+        string source = command.substr(3, spacePos - 3);
+        string targetDirName = command.substr(spacePos + 1);
+        FileSystem* targetDir = currentDir->findDirectory(targetDirName);
+        if (currentDir->findFile(source)) {
+            if (targetDir != nullptr) {
+                currentDir->moveFile(source, targetDir);
+                cout << "Moved file: " << source << "\n";
+            } else {
+                cout << "Target directory not found.\n";
+            }
+        } else if (currentDir->findDirectory(source)) {
+            if (targetDir != nullptr) {
+                currentDir->moveNode(currentDir, targetDir, source);
+                cout << "Moved directory: " << source << "\n";
+            } else {
+                cout << "Target directory not found.\n";
+            }
+        } else {
+            cout << "No such file or directory: " << source << "\n";
+        }
+    } else if (command.substr(0, 3) == "cp ") {
+        size_t spacePos = command.find(' ', 3);
+        string source = command.substr(3, spacePos - 3);
+        string targetDirName = command.substr(spacePos + 1);
+        FileSystem* targetDir = currentDir->findDirectory(targetDirName);
+        if (currentDir->findFile(source)) {
+            if (targetDir != nullptr) {
+                currentDir->copyFile(source, targetDir);
+                cout << "Copied file: " << source << "\n";
+            } else {
+                cout << "Target directory not found.\n";
+            }
+        } else if (currentDir->findDirectory(source)) {
+            if (targetDir != nullptr) {
+                currentDir->copyNode(currentDir, targetDir, source);
+                cout << "Copied directory: " << source << "\n";
+            } else {
+                cout << "Target directory not found.\n";
+            }
+        } else {
+            cout << "No such file or directory: " << source << "\n";
+        }
     }
     else{
         cout << "Unknown command.\n";

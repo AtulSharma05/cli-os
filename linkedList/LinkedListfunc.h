@@ -75,6 +75,28 @@ T& LinkedList<T>::back() {
     }
     return current->data;
 }
-
+template<typename T>
+int LinkedList<T>::size(){
+    Node<T>* temp = head;
+    int count = 0;
+    while (temp != nullptr) {
+        count++;
+        temp = temp->next;
+        }
+        return count;
+}
+template<typename T>
+void LinkedList<T>::appends(T* value){
+    Node<T>* newNode = new Node<T>(value);
+    if (isEmpty()) {
+        head = newNode;
+    } else {
+        Node<T>* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
 
 

@@ -22,9 +22,9 @@ void setNonCanonicalMode(bool enable) {
     tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 void clearLine() {
-    cout << "\r";  // Move cursor to the beginning of the line
-    cout << string(100, ' ');  // Clear the line by overwriting with spaces
-    cout << "\r";  // Move cursor back to the beginning of the line
+    cout << "\r";  
+    cout << string(100, ' '); 
+    cout << "\r";  
 }
 int main() {
     setNonCanonicalMode(true);
@@ -108,7 +108,34 @@ int main() {
                 cp.printCurrDir();
                 cout << "> " << command;  
             }
-        } else {
+        }else if (ch == 9) {  // Tab key pressed for autocompletion
+            // Handle autocomplete here
+            vector<string> suggestions = cp.commandTrie.getAutoCompleteSuggestions(command);
+
+            if (!suggestions.empty()) {
+                clearLine();
+                cp.printCurrDir();
+                // If only one suggestion, display it completely
+                if (suggestions.size() == 1) {
+                    command = suggestions[0];  // Auto-complete the command
+                    cout << "> " << command;
+                } else {
+                    // Display suggestions and let the user choose
+                    cout << "> " << command;
+                    cout<<"\n";
+                    for (const auto& suggestion : suggestions) {
+                        cout << " - " << suggestion ;
+                        
+                    }
+                    //for(int i=0;i<suggestions.size();i++)
+                    cout << "\033[A";  
+                    clearLine();
+                    cp.printCurrDir();
+                    cout << "> " << command;
+                    
+                }
+            }
+        }  else {
             command += ch;
             cout << ch;
         }

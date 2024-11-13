@@ -10,6 +10,10 @@ class Node {
         Node(T value) { 
         data=value;
         next=nullptr; }
+        Node(T *value){
+            data=*value;
+            next=nullptr;
+        }
     };
 template <typename T>
 class LinkedList {
@@ -22,10 +26,12 @@ public:
     }
     ~LinkedList();
     void append(T &);
+   void appends(T *);
     void remove(T );
     void display();
     bool isEmpty();
     void ls();
+    int size();
     T& back(); // Method to get the last element
     
 };

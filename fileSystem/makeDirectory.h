@@ -1,5 +1,6 @@
 #pragma once
 #include "./FileSystem.h"
+#include"hashing.h"
 #include <iostream>
 using namespace std;
 template <>
@@ -15,10 +16,12 @@ void LinkedList<FileSystem>::append(FileSystem &value) {
         temp->next = newNode;
     }
 }
+
 void FileSystem::makeDirectory(string& dirName) {
     FileSystem newDir(dirName,true,this);
      newDir.parent = this; 
     children.append(newDir);
+    directoryMap.insert(dirName,newDir);
     
 }
 

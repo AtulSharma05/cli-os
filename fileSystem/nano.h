@@ -27,54 +27,58 @@ void clearLines() {
 
 void FileSystem::nanoEditor(string& fileName){
     file* temp = this->findFile(fileName);  // Locate the file in the file system
-
+int line=1;
     if (temp == nullptr) {
         cout << "File not found" << endl;
         return;
     }
 
-    string content = temp->content;  // Assuming getContent() retrieves the file's content as a string
-    string editedContent = content;  // We'll modify this string as the user types
+    string content = temp->content;  
+    string editedContent = content; 
     char ch;
-    int cursorPosition = content.size(); // Tracks the current position of the cursor in the content
-    setNonCanonicalModes(true);  // Disable canonical mode for interactive editing
+    int cursorPosition = content.size(); 
+    setNonCanonicalModes(true);  
 
-    cout << "Editing file: " << fileName << " (Press Ctrl+S to save, Ctrl+C to exit)\n";
+    cout << "Editing file: " << fileName << " (Press Ctrl+S to save, Ctrl+X to exit)\n";
     cout << editedContent;  // Display the current content of the file
 
     while (true) {
         ch = getchar();
 
-        if (ch == 24) {  // Ctrl+C to exit without saving
+        if (ch == 24) {  
             break;
         }
 
-        if (ch == 19) {  // Ctrl+S to save the file
-            temp->content=editedContent;  // Assuming setContent() stores the modified content
+        if (ch == 19) {  
+            temp->content=editedContent;  
             cout << "\nFile saved as " << fileName << endl;
         }
 
         if (ch == 10) {  // Enter key (newline)
-            editedContent.insert(cursorPosition, "\n");  // Insert a newline at the current cursor position
+            editedContent.insert(cursorPosition, "\n");  
             cursorPosition++;
+            line++;
+           
             clearLines();
-            cout << editedContent;  // Reprint the edited content
+            cout << editedContent;  
         } else if (ch == 127) {  // Backspace key
             if (cursorPosition > 0) {
-                editedContent.erase(cursorPosition - 1, 1);  // Remove one character before the cursor
+                editedContent.erase(cursorPosition - 1, 1);  
                 cursorPosition--;
+                
                 clearLines();
-                cout << editedContent;  // Reprint the edited content
+                cout << editedContent; 
             }
-        } else {  // Any other key input
-            editedContent.insert(cursorPosition, 1, ch);  // Insert the character at the cursor position
-            cursorPosition++;  // Move the cursor position forward
+        } else {  
+            editedContent.insert(cursorPosition, 1, ch);  
+            cursorPosition++; 
+             
             clearLines();
             cout << editedContent;  // Reprint the edited content
         }
     }
 
-    setNonCanonicalModes(false);  // Restore normal terminal behavior
+    setNonCanonicalModes(false);  
     cout << "\nExiting nano...\n";
 
   

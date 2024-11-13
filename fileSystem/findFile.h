@@ -3,15 +3,30 @@
 #include "../linkedList/LinkedList.h"
 #include <iostream>
 using namespace std;
-   file* FileSystem::findFile(string& fileName) {
-    Node<file>* temp = files.head; // Assuming LinkedList has a 'head' pointer for the start
+//    file* FileSystem::findFile(string& fileName) {
+//     Node<file>* temp = files.head; 
 
-    while (temp != nullptr) {
-        if (temp->data.getName() == fileName) { // Assuming file has a getName() method
-            return &temp->data; // Return a pointer to the file if found
+//     while (temp != nullptr) {
+//         if (temp->data.getName() == fileName) { 
+//             return &temp->data; 
+//         }
+//         temp = temp->next;
+//     }
+//     return nullptr;
+// }
+file* FileSystem::findFile(string& fileName){
+        // Check cache first
+        for (auto node = fileCache.head; node != nullptr; node = node->next) {
+            if (node->data->getName() == fileName) {
+                return node->data;
+            }
         }
-        temp = temp->next;
-    }
-    return nullptr; // Return nullptr if the file is not found
-}
 
+        // Look up in hash map
+        file* f = fileMap.search(fileName);
+        if (f) {
+            this->updatefCache(fileCache, f);
+            return f;
+        }
+        return nullptr;
+    }
