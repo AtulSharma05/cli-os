@@ -127,7 +127,6 @@ int main() {
                         cout << " - " << suggestion ;
                         
                     }
-                    //for(int i=0;i<suggestions.size();i++)
                     cout << "\033[A";  
                     clearLine();
                     cp.printCurrDir();
