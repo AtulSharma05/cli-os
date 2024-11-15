@@ -78,7 +78,7 @@ int line=1;
         }
     }
 
-    setNonCanonicalModes(false);  
+    setNonCanonicalModes(true);  
     cout << "\nExiting nano...\n";
 
   
