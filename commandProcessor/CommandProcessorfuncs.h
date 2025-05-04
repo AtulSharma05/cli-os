@@ -246,7 +246,55 @@ void CommandProcessor::processCommand(vector<UserManager>&users, string& command
         diskScheduler.clearRequests();
         cout << "Cleared all disk requests.\n";
     }
-    else{
+    else if (command == "addprocess") {
+        // Add a new process to the scheduler
+        int burstTime;
+        cout << "Enter burst time for the process: ";
+        cin >> burstTime;
+        cin.ignore(); // Clear newline from input buffer
+
+        Process newProcess(processCounter++, burstTime);
+        scheduler.addProcess(newProcess);
+
+    } else if (command == "runprocesses") {
+        // Execute all processes using Round Robin scheduling
+        scheduler.executeProcesses();
+
+    } 
+    // Memory management commands
+    else if (command.substr(0, 9) == "memalloc ") {
+        try {
+            int size = stoi(command.substr(9));
+            int virtualAddress = memoryManager.allocateMemory(size);
+            cout << "Memory allocated at virtual address: 0x" << hex << virtualAddress << dec << "\n";
+        } catch (const std::exception& e) {
+            cout << "Invalid size. Please enter a valid number.\n";
+        }
+    }
+    else if (command.substr(0, 10) == "memaccess ") {
+        try {
+            int virtualAddress = stoi(command.substr(10));
+            bool success = memoryManager.accessMemory(virtualAddress);
+            if (success) {
+                cout << "Memory access successful at virtual address: 0x" << hex << virtualAddress << dec << "\n";
+            }
+        } catch (const std::exception& e) {
+            cout << "Invalid address. Please enter a valid number.\n";
+        }
+    }
+    else if (command.substr(0, 8) == "memfree ") {
+        try {
+            int virtualAddress = stoi(command.substr(8));
+            memoryManager.freeMemory(virtualAddress);
+            cout << "Memory freed at virtual address: 0x" << hex << virtualAddress << dec << "\n";
+        } catch (const std::exception& e) {
+            cout << "Invalid address. Please enter a valid number.\n";
+        }
+    }
+    else if (command == "memstats") {
+        memoryManager.printMemoryStats();
+    }
+    else {
         cout << "Unknown command.\n";
     }
 }

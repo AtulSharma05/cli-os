@@ -6,6 +6,7 @@
 #include "../fileSystem/FileSystemFuncs.h"
 #include "../fileSystem/ResourceManager.h"
 #include "../fileSystem/DiskScheduler.h"
+#include "../fileSystem/MemoryManager.h"
 #include "CommandTrie.h"
 #include "../fileSystem/file.h"
 using namespace std;
@@ -17,7 +18,8 @@ public:
     FileSystem *currentDir;
     CommandTrie commandTrie;
     ResourceManager resourceManager;
-    DiskScheduler diskScheduler;  // Added DiskScheduler
+    DiskScheduler diskScheduler;
+    MemoryManager memoryManager;  // Added MemoryManager
 
 public:
     CommandProcessor(){
@@ -68,6 +70,12 @@ void CommandProcessor::initializeCommands() {
     commandTrie.insertCommand("diskscan");    // Run SCAN algorithm
     commandTrie.insertCommand("diskcscan");   // Run C-SCAN algorithm
     commandTrie.insertCommand("diskclear");   // Clear disk requests
+
+    // New memory management commands
+    commandTrie.insertCommand("memalloc");   // Allocate memory
+    commandTrie.insertCommand("memaccess");  // Access memory
+    commandTrie.insertCommand("memfree");    // Free memory
+    commandTrie.insertCommand("memstats");   // Show memory statistics
 }
 
 void CommandProcessor::suggestCommand(string& prefix) {
