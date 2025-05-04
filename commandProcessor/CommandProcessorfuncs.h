@@ -13,12 +13,14 @@
 #include "../fileSystem/compress.h/map.h"
 #include "../fileSystem/findFile.h"
 #include "../fileSystem/nano.h"
+#include "../process/ProcessScheduler.h" 
 
 
 #include <iostream>
 #include <vector>
 
-
+ProcessScheduler scheduler(5);
+int processCounter = 1;
 void CommandProcessor::processCommand(vector<UserManager>&users, string& command) {
     if(command.substr(0,5)=="find "){
     size_t pathStart = 5;
@@ -156,8 +158,21 @@ void CommandProcessor::processCommand(vector<UserManager>&users, string& command
         } else {
             cout << "No such file or directory: " << source << "\n";
         }
-    }
-    else{
+    } else if (command == "addprocess") {
+        // Add a new process to the scheduler
+        int burstTime;
+        cout << "Enter burst time for the process: ";
+        cin >> burstTime;
+        cin.ignore(); // Clear newline from input buffer
+
+        Process newProcess(processCounter++, burstTime);
+        scheduler.addProcess(newProcess);
+
+    } else if (command == "runprocesses") {
+        // Execute all processes using Round Robin scheduling
+        scheduler.executeProcesses();
+
+    } else {
         cout << "Unknown command.\n";
     }
 }
