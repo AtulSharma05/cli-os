@@ -86,7 +86,6 @@ int main() {
                 if (command == "exit") {
                     break; 
                 }
-
                 commands.push(command);  
                 cout<<endl;
              cp.printCurrDir();
@@ -104,9 +103,10 @@ int main() {
         } else if (ch == 127) { //Backspace key 
             if (!command.empty()) {
                 command.pop_back();  
-                clearLine();
-                cp.printCurrDir();
-                cout << "> " << command;  
+                cout << "\b \b";
+                // clearLine();
+                // cp.printCurrDir();
+                // cout << "> " << command;  
             }
         }else if (ch == 9) {  // Tab key pressed for autocompletion
             // Handle autocomplete here
