@@ -13,12 +13,14 @@
 #include "../fileSystem/compress.h/map.h"
 #include "../fileSystem/findFile.h"
 #include "../fileSystem/nano.h"
+#include "../process/ProcessScheduler.h" 
 
 
 #include <iostream>
 #include <vector>
 
-
+ProcessScheduler scheduler(5);
+int processCounter = 1;
 void CommandProcessor::processCommand(vector<UserManager>&users, string& command) {
     if(command.substr(0,5)=="find "){
     size_t pathStart = 5;
