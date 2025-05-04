@@ -1,6 +1,9 @@
 {
     "files.associations": {
+        "*.m": "octave",
+        "*.txt": "cmake",
         "vector": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "string": "cpp"
     }
 }

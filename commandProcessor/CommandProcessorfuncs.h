@@ -158,7 +158,95 @@ void CommandProcessor::processCommand(vector<UserManager>&users, string& command
         } else {
             cout << "No such file or directory: " << source << "\n";
         }
-    } else if (command == "addprocess") {
+    }
+    // New resource management commands
+    else if (command == "ps") {
+        cout << "Available processes and their resources:\n";
+        // Process list is handled internally by ResourceManager
+    }
+    else if (command == "newproc") {
+        int pid = resourceManager.createProcess();
+        cout << "Created new process with PID: " << pid << "\n";
+    }
+    else if (command.substr(0, 8) == "request ") {
+        size_t spacePos1 = command.find(' ', 8);
+        if (spacePos1 != string::npos) {
+            int pid = stoi(command.substr(8, spacePos1 - 8));
+            string resource = command.substr(spacePos1 + 1);
+            bool granted = resourceManager.requestResource(pid, resource);
+            if (granted) {
+                cout << "Resource '" << resource << "' allocated to process " << pid << "\n";
+            } else {
+                cout << "Resource '" << resource << "' is busy. Process " << pid << " added to wait queue.\n";
+            }
+        }
+    }
+    else if (command.substr(0, 8) == "release ") {
+        size_t spacePos1 = command.find(' ', 8);
+        if (spacePos1 != string::npos) {
+            int pid = stoi(command.substr(8, spacePos1 - 8));
+            string resource = command.substr(spacePos1 + 1);
+            resourceManager.releaseResource(pid, resource);
+            cout << "Resource '" << resource << "' released by process " << pid << "\n";
+        }
+    }
+    else if (command == "checkdl") {
+        vector<int> deadlocked = resourceManager.detectDeadlocks();
+        if (deadlocked.empty()) {
+            cout << "No deadlocks detected.\n";
+        } else {
+            cout << "Deadlock detected! Involved processes: ";
+            for (int pid : deadlocked) {
+                cout << pid << " ";
+            }
+            cout << "\n";
+        }
+    }
+    // Disk scheduling commands
+    else if (command.substr(0, 9) == "diskseek ") {
+        try {
+            int position = stoi(command.substr(9));
+            diskScheduler.setCurrentPosition(position);
+            cout << "Current disk position set to: " << position << "\n";
+        } catch (const std::exception& e) {
+            cout << "Invalid position. Please enter a valid number.\n";
+        }
+    }
+    else if (command.substr(0, 8) == "diskreq ") {
+        try {
+            int cylinder = stoi(command.substr(8));
+            diskScheduler.addRequest(cylinder);
+            cout << "Added disk request for cylinder: " << cylinder << "\n";
+        } catch (const std::exception& e) {
+            cout << "Invalid cylinder number. Please enter a valid number.\n";
+        }
+    }
+    else if (command == "diskfcfs") {
+        auto [sequence, seekTime] = diskScheduler.fcfs();
+        cout << "FCFS Disk Scheduling Result:\n";
+        cout << "Sequence: ";
+        for (int pos : sequence) cout << pos << " ";
+        cout << "\nTotal seek time: " << seekTime << "\n";
+    }
+    else if (command == "diskscan") {
+        auto [sequence, seekTime] = diskScheduler.scan();
+        cout << "SCAN (Elevator) Disk Scheduling Result:\n";
+        cout << "Sequence: ";
+        for (int pos : sequence) cout << pos << " ";
+        cout << "\nTotal seek time: " << seekTime << "\n";
+    }
+    else if (command == "diskcscan") {
+        auto [sequence, seekTime] = diskScheduler.cscan();
+        cout << "C-SCAN Disk Scheduling Result:\n";
+        cout << "Sequence: ";
+        for (int pos : sequence) cout << pos << " ";
+        cout << "\nTotal seek time: " << seekTime << "\n";
+    }
+    else if (command == "diskclear") {
+        diskScheduler.clearRequests();
+        cout << "Cleared all disk requests.\n";
+    }
+    else if (command == "addprocess") {
         // Add a new process to the scheduler
         int burstTime;
         cout << "Enter burst time for the process: ";
@@ -172,7 +260,41 @@ void CommandProcessor::processCommand(vector<UserManager>&users, string& command
         // Execute all processes using Round Robin scheduling
         scheduler.executeProcesses();
 
-    } else {
+    } 
+    // Memory management commands
+    else if (command.substr(0, 9) == "memalloc ") {
+        try {
+            int size = stoi(command.substr(9));
+            int virtualAddress = memoryManager.allocateMemory(size);
+            cout << "Memory allocated at virtual address: 0x" << hex << virtualAddress << dec << "\n";
+        } catch (const std::exception& e) {
+            cout << "Invalid size. Please enter a valid number.\n";
+        }
+    }
+    else if (command.substr(0, 10) == "memaccess ") {
+        try {
+            int virtualAddress = stoi(command.substr(10));
+            bool success = memoryManager.accessMemory(virtualAddress);
+            if (success) {
+                cout << "Memory access successful at virtual address: 0x" << hex << virtualAddress << dec << "\n";
+            }
+        } catch (const std::exception& e) {
+            cout << "Invalid address. Please enter a valid number.\n";
+        }
+    }
+    else if (command.substr(0, 8) == "memfree ") {
+        try {
+            int virtualAddress = stoi(command.substr(8));
+            memoryManager.freeMemory(virtualAddress);
+            cout << "Memory freed at virtual address: 0x" << hex << virtualAddress << dec << "\n";
+        } catch (const std::exception& e) {
+            cout << "Invalid address. Please enter a valid number.\n";
+        }
+    }
+    else if (command == "memstats") {
+        memoryManager.printMemoryStats();
+    }
+    else {
         cout << "Unknown command.\n";
     }
 }
